@@ -1,13 +1,13 @@
 package web.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
+
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
-import web.servise.UserServise;
+import web.service.UserService;
 
 import java.util.List;
 
@@ -15,15 +15,15 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-	private UserServise userServise;
+	private final UserService userService;
 
-	public UserController(UserServise userServise) {
-		this.userServise = userServise;
+	public UserController(UserService userService) {
+		this.userService = userService;
 	}
 
 	@GetMapping()
 	public String showAllUser(ModelMap model) {
-		List<User> messages = userServise.getAllUser();
+		List<User> messages = userService.getAllUser();
 		model.addAttribute("messages", messages);
 		return "users";
 	}
@@ -39,9 +39,9 @@ public class UserController {
 	public String addUser(@ModelAttribute("messages") User user) {
 
 		if (user.getId() == null) {
-			userServise.add(user);
+			userService.add(user);
 		} else {
-			userServise.updateUser(user);
+			userService.updateUser(user);
 		}
 
 		return "redirect:/user";
@@ -49,14 +49,14 @@ public class UserController {
 
 	@DeleteMapping("user-delete/{id}")
 	public String deleteUser(@PathVariable("id") Long id) {
-		userServise.deleteUser(id);
+		userService.deleteUser(id);
 		return "redirect:/user";
 
 	}
 
-	@GetMapping("/user-update/{id}")
+	@PatchMapping("/user-update/{id}")
 	public String updateUser(@PathVariable("id") Long id, ModelMap model) {
-		User messages = userServise.getUser(id);
+		User messages = userService.getUser(id);
 		model.addAttribute("messages", messages);
 		return "userInfo";
 	}

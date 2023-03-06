@@ -1,4 +1,4 @@
-package web.servise;
+package web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,11 +8,11 @@ import web.model.User;
 
 import java.util.List;
 @Service
-public class UserServiseImp implements UserServise{
+public class UserServiceImp implements UserService {
 
-    private UserDao userDao;
+    private final UserDao userDao;
     @Autowired
-    public UserServiseImp(UserDao userDao) {
+    public UserServiceImp(UserDao userDao) {
         this.userDao = userDao;
     }
 
@@ -29,7 +29,7 @@ public class UserServiseImp implements UserServise{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public User getUser(Long id) {
         return userDao.getUser(id);
     }

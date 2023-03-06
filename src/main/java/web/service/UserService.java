@@ -1,10 +1,10 @@
-package web.servise;
+package web.service;
 
 import web.model.User;
 
 import java.util.List;
 
-public interface UserServise {
+public interface UserService {
     List<User> getAllUser();
 
     void add(User user);
